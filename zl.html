@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+      Intro to MapView - Create a 2D map | Sample | ArcGIS API for JavaScript
+      4.23
+    </title>
+  
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height:100%;
+        width: 100%;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.23/"></script>
+
+
+
+    <script>
+      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Legend", "esri/widgets/ScaleBar", "esri/widgets/LayerList", "esri/widgets/Search"],
+      (Map, MapView,  FeatureLayer, Legend, ScaleBar, LayerList, Search) => {
+        const featureLayer = new FeatureLayer({
+  url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/China_HSR_2016_lines/FeatureServer"
+});
+        const map = new Map({
+          basemap: "topo-vector"
+          //layers:[featureLayer]
+        });
+        map.add(featureLayer);
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [119, 26] // longitude, latitude
+        });
+        
+   let legend = new Legend({
+  view: view
+});
+
+view.ui.add(legend, "bottom-right");
+
+   let scaleBar = new ScaleBar({
+  view: view,
+style:"ruler"
+});
+// Add widget to the bottom left corner of the view
+view.ui.add(scaleBar, {
+  position: "bottom-left"
+});
+
+   let layerList = new LayerList({
+  view: view
+});
+// Adds widget below other elements in the top left corner of the view
+view.ui.add(layerList, {
+  position: "top-right"
+});
+
+const searchWidget = new Search({
+  view: view
+});
+// Adds the search widget below other elements in
+// the top left corner of the view
+view.ui.add(searchWidget, {
+  position: "top-right",
+  index: 2
+});
+
+      });
+    </script>
+    
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
